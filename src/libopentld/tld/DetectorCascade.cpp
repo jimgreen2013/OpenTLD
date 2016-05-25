@@ -23,7 +23,8 @@
  *  Created on: Nov 16, 2011
  *      Author: Georg Nebehay
  */
-
+#include <chrono>
+#include <iostream>
 #include "DetectorCascade.h"
 
 #include <algorithm>
@@ -31,7 +32,9 @@
 #include "TLDUtil.h"
 
 using namespace cv;
-
+using namespace std::chrono;
+using std::cout;
+using std::endl;
 namespace tld
 {
 
@@ -281,7 +284,14 @@ void DetectorCascade::detect(const Mat &img)
 
     //Prepare components
     foregroundDetector->nextIteration(img); //Calculates foreground
+	
+	//+ add: measure integral image function time
+	steady_clock::time_point t1 = steady_clock::now();
     varianceFilter->nextIteration(img); //Calculates integral images
+	steady_clock::time_point t2 = steady_clock::now();
+	milliseconds time_span_milli = duration_cast<milliseconds>(t2-t1);
+	cout << "integral time:"<< time_span_milli.count() <<"millisecond."<<endl;
+
     ensembleClassifier->nextIteration(img);
 
     #pragma omp parallel for

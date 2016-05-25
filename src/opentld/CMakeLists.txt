@@ -32,7 +32,9 @@ target_link_libraries(main libopentld cvblobs config++ ${OpenCV_LIBS})
 # opentld
 add_executable(opentld
     OpenTLD.cpp)
-
+# compile with c++ 11
+set_property(TARGET opentld PROPERTY CXX_STANDARD 11)
+set_property(TARGET opentld PROPERTY CXX_STANDARD_REQUIRED ON)
 target_link_libraries(opentld main libopentld cvblobs config++ ${OpenCV_LIBS})
 
 install(TARGETS opentld DESTINATION bin)

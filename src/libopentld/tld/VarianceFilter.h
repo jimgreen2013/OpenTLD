@@ -31,14 +31,23 @@
 #include "IntegralImage.h"
 #include "DetectionResult.h"
 
+/*修改1
+ *时间2016-05-25
+ *图像积分功能不用模板类 直接实现
+ *实现时 用matlab版本中的实现方式
+ *
+ *
+ */
 namespace tld
 {
-
+using cv::Mat;
 class VarianceFilter
 {
-    IntegralImage<int>* integralImg;
-    IntegralImage<long long>* integralImg_squared;
-
+    //IntegralImage<int>* integralImg;
+    //IntegralImage<long long>* integralImg_squared;
+	unsigned *ii1;
+	unsigned long long *ii2;
+	bool isFirstTime;
 public:
     bool enabled;
     int *windowOffsets;
@@ -53,6 +62,7 @@ public:
     void release();
     void nextIteration(const cv::Mat &img);
     bool filter(int idx);
+	void calcIntegralImg(const Mat &img);
     float calcVariance(int *off);
 };
 
